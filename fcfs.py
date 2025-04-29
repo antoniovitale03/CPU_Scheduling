@@ -24,7 +24,14 @@ def avg_wait_time(gantt, procs_num):
     total_wait_time = sum(start for start, _ in gantt.values())
     return total_wait_time/procs_num
 
+def print_gantt(gantt):
+    print("Gantt:  ", end="")
+    for key, value in gantt.items():
+        proc_time = value[1] - value[0]
+        print(f"{key}({proc_time}) -> ", end="")
+
 print(table)
 print(gantt)
 avg_wait_time = avg_wait_time(gantt, procs_num)
+print_gantt(gantt)
 print(f"tempo di attesa medio: {avg_wait_time}")

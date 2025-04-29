@@ -1,10 +1,20 @@
 import sys, random
+
 def check_arrival_time(list): #controllo che l'ordine dei processi inseriti corrisponda con i tempi di arrivo inseriti
     if list == sorted(list):
         return True
     else:
         return False
 
+def avg_wait_time(gantt, procs_num):
+    total_wait_time = sum(start for start, _ in gantt.values())
+    return total_wait_time/procs_num
+
+def print_gantt(gantt):
+    print("Gantt:  ", end="")
+    for key, value in gantt.items():
+        proc_time = value[1] - value[0]
+        print(f"{key}({proc_time}) -> ", end="")
 
 procs_num = int(input("Inserire il numero dei processi in coda: "))
 procs_order = input("Indica l'ordine di arrivo dei processi in coda. Ad esempio, "
@@ -63,5 +73,9 @@ for k in range(procs_num-1):
     t += choosen_proc_cpu_burst
     table[f"{choosen_proc}"] = ["X", "X"]
 
+
 print(table)
 print(gantt)
+avg_wait_time = avg_wait_time(gantt, procs_num)
+print_gantt(gantt)
+print(f"tempo di attesa medio: {avg_wait_time}")
