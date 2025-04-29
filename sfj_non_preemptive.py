@@ -65,7 +65,3 @@ for k in range(procs_num-1):
 
 print(table)
 print(gantt)
-
-
-
-
