@@ -74,8 +74,6 @@ for k in range(procs_num-1):
     table[f"{choosen_proc}"] = ["X", "X"]
 
 
-print(table)
-print(gantt)
 avg_wait_time = avg_wait_time(gantt, procs_num)
 print_gantt(gantt)
 print(f"tempo di attesa medio: {avg_wait_time}")

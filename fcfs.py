@@ -30,8 +30,7 @@ def print_gantt(gantt):
         proc_time = value[1] - value[0]
         print(f"{key}({proc_time}) -> ", end="")
 
-print(table)
-print(gantt)
+
 avg_wait_time = avg_wait_time(gantt, procs_num)
 print_gantt(gantt)
 print(f"tempo di attesa medio: {avg_wait_time}")
