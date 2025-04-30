@@ -16,14 +16,18 @@ def create_table(procs_num):
     return table
 
 def check_arrival_time(list): #controllo che l'ordine dei processi inseriti corrisponda con i tempi di arrivo inseriti
-    if list == sorted(list):
-        return True
-    else:
-        return False
+    return list == sorted(list)
 
-def avg_wait_time(gantt, procs_num):
-    total_wait_time = sum(value[1][0] for value in gantt)
-    return total_wait_time/procs_num
+def wait_time(gantt, procs_order):
+    total_wait_time = 0
+    wait_times = []
+    procs = procs_order.split(",")
+    for i in range(len(procs)):
+        wait_times.append(sum(value[0] for key, value in gantt if key == f"P{procs[i]}"))#tempo di attesa totale del i-esimo processo
+        print(f"Tempo di attesa di P{procs[i]}: {wait_times[i]}")
+        total_wait_time += wait_times[i]
+    avg_wait_time = total_wait_time/procs_num
+    print(f"Tempo di attesa medio: {avg_wait_time}")
 
 def print_gantt(gantt):
     print("Gantt:  ", end="")
@@ -47,11 +51,11 @@ first_process = list(table.keys())[0]
 first_process_cpu_burst = list(table.values())[0][1]
 gantt.append((f"{first_process}", (t, t + first_process_cpu_burst)))
 t += first_process_cpu_burst
-table[first_process] = ["X", "X"]
+table[first_process][1] = 0 #processo scelto, cpu burst a 0
 
 k=0
 for k in range(procs_num-1):
-    filtered_table = {key: value for key, value in table.items() if (value[0] != "X" and value[0] < t)} #nuova tabella con i processi che hanno un tempo di arrivo minore di un certo valore t e che non siano stati già scelti
+    filtered_table = {key: value for key, value in table.items() if (value[1] != 0 and value[0] < t)} #nuova tabella con i processi che hanno un tempo di arrivo minore di un certo valore t e che non siano stati già scelti
     shortest_job = min(value[1] for value in filtered_table.values()) #minimo cpu burst
 
     # Trovo i processi che hanno il minimo cpu burst
@@ -75,9 +79,7 @@ for k in range(procs_num-1):
     choosen_proc_cpu_burst = min_burst_procs[choosen_proc][1]
     gantt.append((f"{choosen_proc}", (t, t + choosen_proc_cpu_burst)))
     t += choosen_proc_cpu_burst
-    table[f"{choosen_proc}"] = ["X", "X"]
+    table[f"{choosen_proc}"][1] = 0
 
-print(gantt)
-avg_wait_time = avg_wait_time(gantt, procs_num)
 print_gantt(gantt)
-print(f"tempo di attesa medio: {avg_wait_time}")
+wait_time(gantt, procs_order)

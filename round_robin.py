@@ -1,8 +1,13 @@
-def avg_wait_time(gantt, procs_num):
+def wait_time(gantt, procs_order):
     total_wait_time = 0
-    for i in range(procs_num):
-        total_wait_time += sum(value[0] for key, value in gantt if key == f"P{i+1}") #tempo di attesa totale del i-esimo processo
-    return total_wait_time/procs_num
+    wait_times = []
+    procs = procs_order.split(",")
+    for i in range(len(procs)):
+        wait_times.append(sum(value[0] for key, value in gantt if key == f"P{procs[i]}"))#tempo di attesa totale del i-esimo processo
+        print(f"Tempo di attesa di P{procs[i]}: {wait_times[i]}")
+        total_wait_time += wait_times[i]
+    avg_wait_time = total_wait_time/procs_num
+    print(f"Tempo di attesa medio: {avg_wait_time}")
 
 def print_gantt(gantt):
     print("Gantt:  ", end="")
@@ -26,9 +31,8 @@ for i in range(procs_num):
 #calcolo per ogni processo il momento di entrata e il momento di uscita dalla coda (in secondi) e li inserisco nella tupla
 gantt = [] #lista di tuple (non uso il dizionario perchè ci saranno elementi con lo stesso nome di chiave [(Processo, (momento di entrata, momento di uscita))}
 t = 0
-wait_time = 0 #tempo di totale
 #continuo finche tutti i cpu_burst non sono tutti nulli
-while list(table.values()) != [0]*procs_num:
+while any(value > 0 for value in table.values()):
     for i in range(procs_num):
         current_cpu_burst = table[f"P{i+1}"]
         match current_cpu_burst:
@@ -46,6 +50,4 @@ while list(table.values()) != [0]*procs_num:
                         t += time_slice
                         table[f"P{i+1}"] -= time_slice #si riduce il cpu burst di un time slice
 print_gantt(gantt)
-avg_wait_time = avg_wait_time(gantt, procs_num)
-print(" ")
-print(f"tempo di attesa medio: {avg_wait_time}")
+wait_time(gantt, procs_order)
