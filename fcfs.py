@@ -11,25 +11,26 @@ for i in range(procs_num):
     table[f"P{n}"] = cpu_burst
 
 #calcolo per ogni processo il momento di entrata e il momento di uscita dalla coda (in secondi) e li inserisco nella tupla
-gantt = {} #gantt: {Processo: (momento di entrata, momento di uscita)}
+gantt = [] #gantt: [(Processo, (momento di entrata, momento di uscita))}
 t = 0
 wait_time = 0 #tempo di attesa totale
 for key,value in table.items():
     cpu_burst = value
-    gantt[f"{key}"] = (t, t + cpu_burst)
+    gantt.append((f"{key}", (t, t + cpu_burst)))
     t = t + cpu_burst
 
 def avg_wait_time(gantt, procs_num):
-    total_wait_time = sum(start for start, _ in gantt.values())
+    total_wait_time = sum(value[1][0] for value in gantt)
     return total_wait_time/procs_num
 
 def print_gantt(gantt):
     print("Gantt:  ", end="")
-    for key, value in gantt.items():
+    for key, value in gantt:
         proc_time = value[1] - value[0]
         print(f"{key}({proc_time}) -> ", end="")
 
 
-avg_wait_time = avg_wait_time(gantt, procs_num)
 print_gantt(gantt)
+avg_wait_time = avg_wait_time(gantt, procs_num)
+print(" ")
 print(f"tempo di attesa medio: {avg_wait_time}")
