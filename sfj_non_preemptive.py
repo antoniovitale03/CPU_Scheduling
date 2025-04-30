@@ -1,5 +1,20 @@
 import sys, random
 
+def create_table(procs_num):
+    table = {}  # table:   Processo: [Arrival time, CPU_burst]
+    for i in range(procs_num):
+        n = procs_order.split(",")[i]
+        print("Il tempo di arrivo può essere anche in decimale")
+        arrival_time = float(input(f"Tempo di arrivo di P{n}: "))
+        arrival_time_list.append(arrival_time)
+        cpu_burst = int(input(f"Durata picco di P{n}: "))
+        table[f"P{n}"] = [arrival_time, cpu_burst]
+
+    # controllo i tempi di arrivo
+    if not check_arrival_time(arrival_time_list):
+        sys.exit("I tempi di arrivo inseriti non corrispondono con l'ordine di arrivo dei processi!")
+    return table
+
 def check_arrival_time(list): #controllo che l'ordine dei processi inseriti corrisponda con i tempi di arrivo inseriti
     if list == sorted(list):
         return True
@@ -20,19 +35,9 @@ procs_num = int(input("Inserire il numero dei processi in coda: "))
 procs_order = input("Indica l'ordine di arrivo dei processi in coda. Ad esempio, "
           "scrivendo 2,3,1 stai indicando che i processi arrivano nell'ordine P2, P3, P1 ")
 
-table = {} #table:   Processo: [Arrival time, CPU_burst]
 arrival_time_list = [] #creo questa lista per vedere se i tempi di arrivo sono in ordine
-for i in range(procs_num):
-    n = procs_order.split(",")[i]
-    print("Il tempo di arrivo può essere anche in decimale")
-    arrival_time = float(input(f"Tempo di arrivo di P{n}: "))
-    arrival_time_list.append(arrival_time)
-    cpu_burst = int(input(f"Durata picco di P{n}: "))
-    table[f"P{n}"] = [arrival_time, cpu_burst]
 
-#controllo i tempi di arrivo
-if not check_arrival_time(arrival_time_list):
-    sys.exit("I tempi di arrivo inseriti non corrispondono con l'ordine di arrivo dei processi!")
+table = create_table(procs_num)
 
 
 gantt = {} #gantt: {Processo: (momento di entrata, momento di uscita)}

@@ -14,7 +14,6 @@ for i in range(procs_num):
 gantt = {} #gantt: {Processo: (momento di entrata, momento di uscita)}
 t = 0
 wait_time = 0 #tempo di attesa totale
-print("Gantt: ", end="")
 for key,value in table.items():
     cpu_burst = value
     gantt[f"{key}"] = (t, t + cpu_burst)
