@@ -9,6 +9,14 @@ def wait_time(gantt, procs_order):
     avg_wait_time = total_wait_time/procs_num
     print(f"Tempo di attesa medio: {avg_wait_time}")
 
+def create_table(procs_num, procs_order):
+    table = {}  # table:   {Processo: CPU_burst}
+    for i in range(procs_num):
+        n = procs_order.split(",")[i]
+        cpu_burst = int(input(f"Durata picco del processo P{n} (in secondi)"))
+        table[f"P{n}"] = cpu_burst
+    return table
+
 def print_gantt(gantt):
     print("Gantt:  ", end="")
     for key, value in gantt:
@@ -22,11 +30,8 @@ procs_order = input("Indica l'ordine di arrivo dei processi in coda. Ad esempio,
           "scrivendo 2,3,1 stai indicando che i processi arrivano nell'ordine P2, P3, P1 ")
 
 time_slice = int(input("Indica il quanto di tempo (in secondi): "))
-table = {} #table:   {Processo: CPU_burst}
-for i in range(procs_num):
-    n = procs_order.split(",")[i]
-    cpu_burst = int(input(f"Durata picco del processo P{n} (in secondi)"))
-    table[f"P{n}"] = cpu_burst
+
+table = create_table(procs_num, procs_order)
 
 #calcolo per ogni processo il momento di entrata e il momento di uscita dalla coda (in secondi) e li inserisco nella tupla
 gantt = [] #lista di tuple (non uso il dizionario perchè ci saranno elementi con lo stesso nome di chiave [(Processo, (momento di entrata, momento di uscita))}
@@ -39,15 +44,14 @@ while any(value > 0 for value in table.values()):
             case 0:
                 i += 1 # il processo ha finito quindi si passa al prossimo
             case _: #tutti gli altri casi
-                if table[f"P{i+1}"] != 0:
-                    cpu_burst = table[f"P{i+1}"]
-                    if cpu_burst < time_slice: #il processo sarà eseguito tutto ed eliminato
-                        gantt.append((f"P{i + 1}", (t, t + cpu_burst)))
-                        t += cpu_burst
-                        table[f"P{i+1}"] = 0
-                    else:
-                        gantt.append((f"P{i + 1}", (t, t + time_slice)))
-                        t += time_slice
-                        table[f"P{i+1}"] -= time_slice #si riduce il cpu burst di un time slice
+                cpu_burst = table[f"P{i+1}"]
+                if cpu_burst < time_slice: #il processo sarà eseguito tutto ed eliminato
+                    gantt.append((f"P{i + 1}", (t, t + cpu_burst)))
+                    t += cpu_burst
+                    table[f"P{i+1}"] = 0
+                else:
+                    gantt.append((f"P{i + 1}", (t, t + time_slice)))
+                    t += time_slice
+                    table[f"P{i+1}"] -= time_slice #si riduce il cpu burst di un time slice
 print_gantt(gantt)
 wait_time(gantt, procs_order)

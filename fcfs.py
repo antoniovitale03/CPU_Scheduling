@@ -4,8 +4,7 @@ def create_table(procs_num, procs_order):
         n = procs_order.split(",")[i]
         cpu_burst = int(input(f"Durata picco del processo P{n} (in secondi)"))
         table[f"P{n}"] = cpu_burst
-
-        return table
+    return table
 def wait_time(gantt, procs_order):
     total_wait_time = 0
     wait_times = []
@@ -37,7 +36,6 @@ for key,value in table.items():
     cpu_burst = value
     gantt.append((f"{key}", (t, t + cpu_burst)))
     t = t + cpu_burst
-
 
 print_gantt(gantt)
 wait_time(gantt, procs_order)

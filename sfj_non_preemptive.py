@@ -53,9 +53,8 @@ gantt.append((f"{first_process}", (t, t + first_process_cpu_burst)))
 t += first_process_cpu_burst
 table[first_process][1] = 0 #processo scelto, cpu burst a 0
 
-k=0
-for k in range(procs_num-1):
-    filtered_table = {key: value for key, value in table.items() if (value[1] != 0 and value[0] < t)} #nuova tabella con i processi che hanno un tempo di arrivo minore di un certo valore t e che non siano stati già scelti
+while any(value[1] > 0 for value in table.values()):
+    filtered_table = {key: value for key, value in table.items() if (value[1] != 0 and value[0] <= t)} #nuova tabella con i processi che hanno un tempo di arrivo minore di un certo valore t e che non siano stati già scelti
     shortest_job = min(value[1] for value in filtered_table.values()) #minimo cpu burst
 
     # Trovo i processi che hanno il minimo cpu burst
