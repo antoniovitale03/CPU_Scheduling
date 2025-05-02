@@ -73,7 +73,7 @@ def sjf_preemptive(table):
         t = temp_t
     return gantt, table, t
 
-def sfj_non_preemptive(table, t):
+def sfj_non_preemptive(gantt, table, t):
     while any(value[1] > 0 for value in table.values()):
         filtered_table = {key: value for key, value in table.items() if (value[1] != 0 and value[0] <= t)}  # nuova tabella con i processi che hanno un tempo di arrivo minore di un certo valore t e che non siano stati già scelti
         shortest_job = min(value[1] for value in filtered_table.values())  # minimo cpu burst
@@ -118,7 +118,7 @@ procs_order = input("Indica l'ordine di arrivo dei processi in coda. Ad esempio,
                         "scrivendo 2,3,1 stai indicando che i processi arrivano nell'ordine P2, P3, P1 ")
 table = create_table(procs_num, procs_order)
 gantt, table, t = sjf_preemptive(table)
-#gantt = sfj_non_preemptive(table, t)
-print(table)
+gantt = sfj_non_preemptive(gantt, table, t)
+#print(table)
 print_gantt(gantt)
 #wait_time(gantt, procs_order)
