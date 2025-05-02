@@ -93,7 +93,6 @@ def sfj_non_preemptive(gantt, table, t):
                 k = random.randint(0, len(choosen_procs))
                 choosen_proc = choosen_procs[k]
 
-        print(choosen_proc)
         # aggiorno le informazioni dopo aver scelto il processo
         choosen_proc_cpu_burst = min_burst_procs[choosen_proc][1]
         gantt.append((f"{choosen_proc}", (t, t + choosen_proc_cpu_burst)))
