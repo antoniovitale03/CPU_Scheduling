@@ -5,6 +5,16 @@ def create_table(procs_num, procs_order):
         cpu_burst = int(input(f"Durata picco del processo P{n} (in secondi)"))
         table[f"P{n}"] = cpu_burst
     return table
+
+def create_gantt(table):
+    gantt = []  # gantt: [(Processo, (momento di entrata, momento di uscita))
+    t = 0
+    for key, value in table.items():
+        cpu_burst = value
+        gantt.append((f"{key}", (t, t + cpu_burst)))
+        t = t + cpu_burst
+    return gantt
+
 def wait_time(gantt, procs_order):
     total_wait_time = 0
     wait_times = []
@@ -29,14 +39,7 @@ procs_order = input("Indica l'ordine di arrivo dei processi in coda. Ad esempio,
           "scrivendo 2,3,1 stai indicando che i processi arrivano nell'ordine P2, P3, P1 ")
 table = create_table(procs_num, procs_order)
 
-#calcolo per ogni processo il momento di entrata e il momento di uscita dalla coda (in secondi) e li inserisco nella tupla
-gantt = [] #gantt: [(Processo, (momento di entrata, momento di uscita))
-t = 0
-for key,value in table.items():
-    cpu_burst = value
-    gantt.append((f"{key}", (t, t + cpu_burst)))
-    t = t + cpu_burst
-
+gantt = create_gantt(table)
 print_gantt(gantt)
 wait_time(gantt, procs_order)
 

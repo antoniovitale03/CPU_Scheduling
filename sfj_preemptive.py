@@ -1,7 +1,5 @@
 import sys, random
 
-
-
 def create_table(procs_num, procs_order):
     table = {}  # table:   {Processo: [Arrival time, CPU_burst]}
     arrival_time_list = []
@@ -110,8 +108,6 @@ def print_gantt(gantt):
         proc_time = value[1] - value[0]
         print(f"{key}({proc_time}) -> ", end="")
 
-
-gantt = [] #gantt: [(Processo, (momento di entrata, momento di uscita)
 
 procs_num = int(input("Inserire il numero dei processi in coda: "))
 procs_order = input("Indica l'ordine di arrivo dei processi in coda. Ad esempio, "
