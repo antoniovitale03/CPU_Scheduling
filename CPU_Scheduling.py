@@ -26,10 +26,13 @@ class CPU_Scheduling:
         print(f"Tempo di attesa medio: {avg_wait_time}")
 
     def print_gantt(self, gantt):
-        print("Gantt:  ", end="")
+        print("Gantt: ", end="")
         for key, value in gantt:
             proc_time = value[1] - value[0]
-            print(f"{key}({proc_time}) -> ", end="")
+            if value == gantt[-1][1]: #ultimo valore non printare la freccia
+                print(f"{key}({proc_time}) ", end="")
+            else: print(f"{key}({proc_time}) -> ", end="")
+        print(" ")
 
     def check_arrival_time(self, list):  # controllo che l'ordine dei processi inseriti corrisponda con i tempi di arrivo inseriti
         return list == sorted(list)
@@ -144,7 +147,7 @@ class CPU_Scheduling:
 
     def run_fcfs(self, procs_num, procs_order, t, gantt):
         table = self.create_table_0_3(procs_num, procs_order)
-        gantt = self.create_gantt_0(table, t)
+        gantt = self.create_gantt_0(table, t, gantt)
         self.print_gantt(gantt)
         self.wait_time(gantt, procs_order, procs_num)
 
